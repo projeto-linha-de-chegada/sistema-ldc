@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './App.css';
 //bootstrap include
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,27 +15,13 @@ import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import CardColumns from 'react-bootstrap/CardColumns'
 
-//pages import
-import Login from "./pages/Login"
-import MinhasHoras from "./pages/MinhasHoras"
-
-import { BrowserRouter, Switch, Route} from "react-router-dom"
-
-
-function App(props) {
-  return (
-    <div>
-      <header>
-        <link></link>
-      </header>
-      <main>
-        Conteudo
-      </main>
-      <footer>
-        Made with love s2
-      </footer>
-    </div>
-  );
+class Login extends Component{
+    render(){
+      return (
+        <div>
+          <h2>Tela de Login</h2>
+        </div>      )
+    }
 }
 
-export default App;
+export default Login;

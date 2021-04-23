@@ -1,30 +1,15 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 //import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-function funcaoJSX(){
-  return "Upload de HC";
-}
-
-/*
-const App = () => {
-  const name = "Felipe Santos"
-  return <div className="App">
-      {name}
-      </div>
-}
-*/
+import { BrowserRouter, Switch, Route} from "react-router-dom"
 
 ReactDOM.render(
-  <React.StrictMode>
-    {<App />}
-    {/*funcaoJSX()*/}
-    {/*UploadButtons*/}
-  </React.StrictMode>,
+  <BrowserRouter>
+  {<App />}
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
