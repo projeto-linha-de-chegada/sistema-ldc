@@ -1,39 +1,28 @@
 import React, {Component} from 'react';
-import './App.css';
+//import './App.css';
+
 //bootstrap include
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-//navbar imports
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
-
-//card imports 
-import Card from 'react-bootstrap/Card';
-import CardDeck from 'react-bootstrap/CardDeck';
-import CardColumns from 'react-bootstrap/CardColumns'
-
 //pages import
-import Login from "./pages/Login"
-import MinhasHoras from "./pages/MinhasHoras"
+import Login from "./pages/login/Login"
+import Cadastro from "./pages/cadastro/Cadastro"
 
-import { BrowserRouter, Switch, Route} from "react-router-dom"
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom"
 
 
 function App(props) {
   return (
-    <div>
+      <div>
       <header>
-        <link></link>
       </header>
       <main>
-        Conteudo
+      <Switch>
+        <Route exact path = "/" component={Login}></Route>
+        <Route path = "/Cadastro" component={Cadastro}></Route>
+      </Switch>
       </main>
       <footer>
-        Made with love s2
       </footer>
     </div>
   );
