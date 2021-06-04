@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 var entrar = () => {
   var email = document.getElementById("email").value;
   var senha = document.getElementById("password").value;
-  alert("email: " + email + "\nsenha: " + senha);
+  //alert("email: " + email + "\nsenha: " + senha);
 }
 
 var lista_bgs = [
@@ -117,10 +118,6 @@ export default function SignInSide() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Manter Conectado"
-            />
             {/* in button if wnat join with enter type="submit"*/}
             <Button
               fullWidth
@@ -128,6 +125,7 @@ export default function SignInSide() {
               color="primary"
               className={classes.submit}
               onClick={entrar}
+              href="/Dashboard"
             >
               Entrar
             </Button>

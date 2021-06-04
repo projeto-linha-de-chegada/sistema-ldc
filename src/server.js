@@ -1,29 +1,57 @@
-const {Pool, Client} = require('pg');
-const connectionString = 'postgressql://postgres:lollol@localhost:5432/postgres';
+var usuarios;
 
-const client = new Client({
-    connectionString:connectionString
-});
-
-client.connect();
-
-var dados;
-
-client.query('SELECT * from usuarios',(err,res)=>{
+function getUsers(){
     
-    if(err){
-        console.log(err.stack);
-    }
-    else{ 
-        console.log(res.rows);
-        dados = res.rows[0].nome;
-    }
-    client.end();
-});
+    const {Client} = require('pg');
+    const connectionString = 'postgressql://postgres:lollol@localhost:5432/postgres';
+    const client = new Client({
+    connectionString:connectionString
+    });
 
-console.log(dados);
+    client.connect();
 
-function verificaConteudoDosDados(){
-    console.log(dados);
+    client.query('SELECT * from usuarios',(err,res)=>{
+        
+        if(err){
+            console.log(err.stack);
+            main();
+        }
+        else{ 
+            //console.log(res.rows);
+            usuarios = res.rows;
+            main();
+        }
+        client.end();
+    });
 }
-setInterval(verificaConteudoDosDados,10000);
+
+function setUser(nome,email,senha,matricula){
+    const {Client} = require('pg');
+    const connectionString = 'postgressql://postgres:lollol@localhost:5432/postgres';
+    const client = new Client({
+    connectionString:connectionString
+    });
+
+    client.connect();
+
+    client.query("INSERT INTO usuarios (nome,email,senha,matricula) VALUES ($1,$2,$3,$4)",
+        [nome,email,senha,matricula],(err,res)=>{
+        if(err){
+            console.log(err.stack);
+            main();
+        }
+        else{
+            console.log("Insert bem sucedido");
+            main();
+        }
+        client.end();
+    });
+}
+
+getUsers();
+
+function main(){
+    console.log(usuarios);
+    //setUser("Outro Cara","felipe@gmail.com","pass","412649");
+    
+}
