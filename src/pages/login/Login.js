@@ -12,6 +12,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
+//auth
+import { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import StoreContext from "../../components/Store/Context";
 
 function Copyright() {
   return (
@@ -56,12 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var entrar = () => {
-  var email = document.getElementById("email").value;
-  var senha = document.getElementById("password").value;
-  //alert("email: " + email + "\nsenha: " + senha);
-}
-
 var lista_bgs = [
   "url('./imgs_login/bg1.jpg')",
   "url('./imgs_login/bg2.jpg')",
@@ -83,6 +81,48 @@ export default function SignInSide() {
   }
 
   let loop = setInterval(mudaImg, 3000);
+
+  function validar_login(user, password) {
+
+    //const consulta = require("../../postgreSQL/Connection");
+    /*
+    if(consulta(user,password) == true){
+      return { token: '1234' };
+    } 
+    else{
+      return { error: 'Usuário ou senha inválido' };
+    }
+    */
+
+    if (user === 'admin' && password === 'admin') {
+      return { token: '1234' };
+
+    }
+    return { error: 'Usuário ou senha inválido' };
+
+  }
+
+  const { setToken } = useContext(StoreContext);
+  const {token} = useContext(StoreContext);
+  const history = useHistory();
+
+
+  function login() {
+    var email = document.getElementById("email").value;
+    var senha = document.getElementById("password").value;
+
+    const { token, error } = validar_login(email,senha);
+
+    if (token) {
+      setToken(token);
+      alert("Login sucess" + token);
+      return history.push('/');
+    }
+    else{
+      alert("Login Fail");
+    }
+  }
+
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -120,11 +160,12 @@ export default function SignInSide() {
             />
             {/* in button if wnat join with enter type="submit"*/}
             <Button
+              id="entrar"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={entrar}
+              onClick={login}
               href="/Dashboard"
             >
               Entrar

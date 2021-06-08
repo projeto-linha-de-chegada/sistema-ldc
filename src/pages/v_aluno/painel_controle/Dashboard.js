@@ -24,6 +24,11 @@ import Chart from './Tabela_horas';
 import Deposits from './Horas_totais';
 import Orders from './Recentes';
 
+//auth
+import StoreContext from '../../../components/Store/Context';
+import { useContext } from 'react';
+
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -129,6 +134,9 @@ export default function Dashboard() {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+  //auth 
+  const { setToken } = useContext(StoreContext);
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -146,7 +154,7 @@ export default function Dashboard() {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             LDC
           </Typography>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => setToken(null)}>
             <Badge badgeContent={0} color="secondary">
               <ExitToAppIcon />
             </Badge>
