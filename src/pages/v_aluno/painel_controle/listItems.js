@@ -39,7 +39,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Estatisticas" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to="/cadastrar_hora">
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
