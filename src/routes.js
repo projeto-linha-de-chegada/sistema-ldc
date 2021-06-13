@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 //pages import
 import Login from "./pages/login/Login";
 import Aluno_Dashboard from "./pages/v_aluno/painel_controle/Dashboard";
+import Aluno_Dashboard_Horas from "./pages/v_aluno/lista_horas/Dashboard"
 
 //auth
 import StoreProvider from './components/Store/Provider';
@@ -15,6 +16,7 @@ function Routes(){
         <BrowserRouter>
             <StoreProvider>
                 <Switch>
+                    <PrivateRoute path = "/minhas_horas" component={Aluno_Dashboard_Horas}/>
                     <Route exact path = "/" component={Login}/>
                     <PrivateRoute path = "/Dashboard" component={Aluno_Dashboard}/>
                 </Switch>

@@ -10,7 +10,7 @@ function getUsers(){
 
     client.connect();
 
-    client.query('SELECT * from usuarios',(err,res)=>{
+    client.query('SELECT * from aluno',(err,res)=>{
         
         if(err){
             console.log(err.stack);
