@@ -115,11 +115,11 @@ export default function SignInSide() {
 
     if (token) {
       setToken(token);
-      alert("Login sucess" + token);
+      //alert("Login sucess" + token);
       return history.push('/');
     }
     else{
-      alert("Login Fail");
+      //alert("Login Fail");
     }
   }
 

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import Button from '@material-ui/core/Button';
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -42,16 +43,51 @@ export default function FormPropsTextFields() {
     const [categoria, setCategoria] = React.useState('');
     const [subCategoria, setSubCategoria] = React.useState('');
 
+    const i = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const ii = ["a", "b", "c"];
+    const iii = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+    const iv = ["a", "b", "c", "d"];
+    const v = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const vi = ["a", "b", "c", "d"];
+    const vii = ["a", "b", "c", "d", "e"];
+
+    var arr = i;
+
     const handleChangeCategoria = (event) => {
         setCategoria(event.target.value);
+        
+        console.log(event.target.value);
+        
+        switch (event.target.value) {
+            case 1:
+                arr = i;
+                break;
+            case 2:
+                arr = ii;
+                break;
+            case 3:
+                arr = iii;
+                break;
+            case 4:
+                arr = iv;
+                break;
+            case 5:
+                arr = v;
+                break;
+            case 6:
+                arr = vi;
+                break;
+            case 7:
+                arr = vii;
+                break;
+        }
+
     };
 
     const handleChangeSubCategoria = (event) => {
         setSubCategoria(event.target.value);
+        console.log("selecione subc: " + event.target.value);
     };
-
-
-
 
     const handleDateChangeInicio = (date) => {
         setSelectedDateInicio(date);
@@ -64,10 +100,13 @@ export default function FormPropsTextFields() {
     return (
 
         <form className={classes.root} noValidate autoComplete="off">
+
             <div>
+                <br></br>
                 <h1 style={{ textAlign: "center", marginTop: '10px' }}>Informações básicas</h1>
             </div>
-            <div>
+
+            <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", }}>
                 <TextField
                     id="outlined-search"
                     label="Titulo*"
@@ -119,6 +158,10 @@ export default function FormPropsTextFields() {
                         <MenuItem value={1}>I</MenuItem>
                         <MenuItem value={2}>II</MenuItem>
                         <MenuItem value={3}>III</MenuItem>
+                        <MenuItem value={4}>IV</MenuItem>
+                        <MenuItem value={5}>V</MenuItem>
+                        <MenuItem value={6}>VI</MenuItem>
+                        <MenuItem value={7}>VII</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -131,9 +174,9 @@ export default function FormPropsTextFields() {
                         onChange={handleChangeSubCategoria}
                         className={classes.selectEmpty}
                     >
-                        <MenuItem value={1}>I</MenuItem>
-                        <MenuItem value={2}>II</MenuItem>
-                        <MenuItem value={3}>III</MenuItem>
+                        {arr.map((number) =>
+                            <MenuItem value={number}>{number}</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
 
@@ -158,23 +201,33 @@ export default function FormPropsTextFields() {
 
             </div>
 
+
             <div>
+                <br></br>
                 <h1 style={{ textAlign: "center", marginTop: '10px' }}>Anexos</h1>
             </div>
 
-            <TextField
-                id="outlined-search"
-                label="Link"
-                type="search"
-                variant="outlined" />
+            <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", }}>
 
-            <div style={{ display: "inline-block" }}>
+                <TextField
+                    id="outlined-search"
+                    label="Link"
+                    type="search"
+                    variant="outlined" />
+
                 <ListItem button>
                     <ListItemIcon>
                         <BackupIcon />
                     </ListItemIcon>
                     <ListItemText primary=".pdf complementar" />
                 </ListItem>
+            </div>
+
+            <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", marginTop: "30px" }}>
+                <Button variant="contained" color="primary">
+                    Adicionar atividade
+                </Button>
+                <br></br>
             </div>
         </form>
     );
