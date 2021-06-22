@@ -64,35 +64,25 @@ var lista_bgs = [
   "url('./imgs_login/bg1.jpg')",
   "url('./imgs_login/bg2.jpg')",
   "url('./imgs_login/bg3.jpg')"];
-  
+
 var controller = 0;
 
 
 export default function SignInSide() {
   const classes = useStyles();
 
-  async function mudaImg(){
+  async function mudaImg() {
     let imagem_atual = document.getElementById("image");
     imagem_atual.style.backgroundImage = lista_bgs[controller];
     controller++;
-    if(controller == lista_bgs.length){
+    if (controller == lista_bgs.length) {
       controller = 0;
-    } 
+    }
   }
 
   let loop = setInterval(mudaImg, 3000);
 
   function validar_login(user, password) {
-
-    //const consulta = require("../../postgreSQL/Connection");
-    /*
-    if(consulta(user,password) == true){
-      return { token: '1234' };
-    } 
-    else{
-      return { error: 'Usuário ou senha inválido' };
-    }
-    */
 
     if (user === 'admin' && password === 'admin') {
       return { token: '1234' };
@@ -103,7 +93,7 @@ export default function SignInSide() {
   }
 
   const { setToken } = useContext(StoreContext);
-  const {token} = useContext(StoreContext);
+  const { token } = useContext(StoreContext);
   const history = useHistory();
 
 
@@ -111,14 +101,14 @@ export default function SignInSide() {
     var email = document.getElementById("email").value;
     var senha = document.getElementById("password").value;
 
-    const { token, error } = validar_login(email,senha);
+    const { token, error } = validar_login(email, senha);
 
     if (token) {
       setToken(token);
       //alert("Login sucess" + token);
       return history.push('/');
     }
-    else{
+    else {
       //alert("Login Fail");
     }
   }
@@ -127,16 +117,16 @@ export default function SignInSide() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} id="image"/>
+      <Grid item xs={false} sm={4} md={7} className={classes.image} id="image" />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar alt="LDC Icone" className={classes.avatar} src="./plc_logo.ico">
           </Avatar>
           <Typography component="h1" variant="h5">
-            Acesso ao sistema
+            Acesso ao Sistema
           </Typography>
           <form className={classes.form} noValidate>
-            <TextField 
+            <TextField
               variant="outlined"
               margin="normal"
               required
@@ -177,7 +167,7 @@ export default function SignInSide() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/cadastro" variant="body2">
                   {"Não tem conta? Cadastre-se!"}
                 </Link>
               </Grid>
