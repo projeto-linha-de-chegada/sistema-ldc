@@ -86,11 +86,18 @@ export default function SignInSide() {
         var cf_email = document.getElementById("cf_email").value;
         var senha = document.getElementById("senha").value;
         var cf_senha = document.getElementById("cf_senha").value;
+        var cpf = document.getElementById("cpf").value;
 
         if(nome == "" || matricula == "" || curso == "" || email == "" || cf_email == ""
-            || senha == "" || cf_senha == "" ){
+            || senha == "" || cf_senha == "" || cpf == ""){
                 alert("Por favor, preencha todos os campos");
                 return;
+        }
+
+
+        if(validator.isNumeric(cpf) == false || cpf.length != 11){
+            alert("formato de cpf inválido");
+            return;
         }
 
         if(validator.isEmail(email) == false){
@@ -147,6 +154,15 @@ export default function SignInSide() {
                             fullWidth
                             id="matricula"
                             label="Matricula"
+                            autoFocus
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="cpf"
+                            label="CPF (somente números)"
                             autoFocus
                         />
                         <TextField
