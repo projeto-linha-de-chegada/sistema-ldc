@@ -20,6 +20,7 @@ SELECT * FROM aluno;
 
 DROP TABLE IF EXISTS aluno_pendente;
 
+--tabela para alunos que ainda não tiveram cadastro aprovado pela coordenação
 CREATE TABLE IF NOT EXISTS aluno_pendente(
 	id SERIAL NOT NULL,
 	nome VARCHAR(50) NOT NULL,
