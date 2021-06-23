@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS usuarios;
 CREATE TABLE IF NOT EXISTS usuarios(
 	id SERIAL NOT NULL,
 	nome VARCHAR(50) NOT NULL,
+	cpf VARCHAR(20),
 	email VARCHAR(50) NOT NULL,
 	senha VARCHAR(50) NOT NULL,
 	matricula VARCHAR(50) NOT NULL,
@@ -13,5 +14,5 @@ CREATE TABLE IF NOT EXISTS usuarios(
 	PRIMARY KEY (id)
 );
 
-INSERT INTO USUARIOS (nome,email,senha,matricula,curso,usertoken) VALUES ('Felipe','felipe@gmail.com','lollol',412649,'engenharia',123);
+INSERT INTO USUARIOS (nome,email,senha,matricula,curso,usertoken) VALUES ('Felipe','01234567890','felipe@gmail.com','lollol',412649,'engenharia',123);
 SELECT * FROM USUARIOS;
