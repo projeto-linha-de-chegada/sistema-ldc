@@ -5,7 +5,7 @@ function Conectar(){
     user: 'postgres',
     host: 'localhost',
     database: 'postgres',
-    password: 'lollol',
+    password: 'postgres',
     port: 5432,
   });
 

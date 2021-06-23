@@ -3,7 +3,7 @@ var usuarios;
 function getUsers(){
     
     const {Client} = require('pg');
-    const connectionString = 'postgressql://postgres:lollol@localhost:5432/postgres';
+    const connectionString = 'postgressql://postgres:postgres@localhost:5432/postgres';
     const client = new Client({
     connectionString:connectionString
     });

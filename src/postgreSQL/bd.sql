@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS aluno(
 	PRIMARY KEY (id)
 );
 
-INSERT INTO aluno (nome,email,senha,matricula,curso,usertoken) VALUES ('Felipe','01234567890','felipe@gmail.com','lollol',412649,'engenharia',123);
+INSERT INTO aluno (nome,cpf,email,senha,matricula,curso,usertoken) VALUES ('Felipe','01234567890','felipe@gmail.com','lollol',412649,'engenharia',123);
 SELECT * FROM aluno;
 
 DROP TABLE IF EXISTS aluno_pendente;
@@ -35,5 +35,5 @@ CREATE TABLE IF NOT EXISTS aluno_pendente(
 	PRIMARY KEY (id)
 );
 
-INSERT INTO aluno_pendente (nome,email,senha,matricula,curso,usertoken) VALUES ('Felipe','01234567890','felipe@gmail.com','lollol',412649,'engenharia',123);
+INSERT INTO aluno_pendente (nome,cpf,email,senha,matricula,curso,usertoken) VALUES ('Felipe','01234567890','felipe@gmail.com','lollol',412649,'engenharia',123);
 SELECT * FROM aluno_pendente;
