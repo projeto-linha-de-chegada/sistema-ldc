@@ -1,7 +1,5 @@
 Sistema do Projeto Linha de Chegada V-1.0.
 
-
-
 (Erro H10) : Para rodar sem erro no Heroku foi necessário rodar o comando:
 
 npm install serve --s

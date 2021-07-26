@@ -3,25 +3,23 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Portas from "../../portas";
 
 //auth
-import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useContext } from 'react';
 import StoreContext from "../../components/Store/Context";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Direitos reservados ©'}
-      <Link color="blue" href="https://team-pldc.herokuapp.com/" target="_blank">
+      <Link color="primary" href="https://team-pldc.herokuapp.com/" target="_blank">
         Projeto Linha de Chegada
       </Link>{' '}
       {new Date().getFullYear()}
@@ -35,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: lista_bgs[2],
+    backgroundImage: "url('./background/bg1.jpg')",
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
@@ -60,60 +58,93 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-var lista_bgs = [
-  "url('./imgs_login/bg1.jpg')",
-  "url('./imgs_login/bg2.jpg')",
-  "url('./imgs_login/bg3.jpg')"];
-
-var controller = 0;
-
-
 export default function SignInSide() {
   const classes = useStyles();
-
-  async function mudaImg() {
-    let imagem_atual = document.getElementById("image");
-    imagem_atual.style.backgroundImage = lista_bgs[controller];
-    controller++;
-    if (controller == lista_bgs.length) {
-      controller = 0;
-    }
-  }
-
-  let loop = setInterval(mudaImg, 3000);
-
-  function validar_login(user, password) {
-
-    if (user === 'admin' && password === 'admin') {
-      return { token: '1234' };
-
-    }
-    return { error: 'Usuário ou senha inválido' };
-
-  }
-
   const { setToken } = useContext(StoreContext);
   const { token } = useContext(StoreContext);
-  const history = useHistory();
 
+  //impede que o user entre na tela de login se já houver um login feito
+  if (token) {
+    window.location = "/alunoHome";
+  }
 
-  function login() {
+  const login = (resJSON, email, senha) => {
+    console.log(resJSON.email + " " + resJSON.senha + " " + resJSON.usertoken);
+
+    if (email === resJSON.email && senha === resJSON.senha) {
+      setToken(resJSON.usertoken);
+    }
+
+    else {
+      alert("Login falhou!");
+    }
+
+  }
+
+  //função que verifica se o usuario existe na tabela de pendentes
+  const validar_login_pendentes = async (email, senha) => {
+    try {
+      const body = { email, senha };
+      const response = await fetch(Portas().serverHost + "/alunos/verifyP",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const resJSON = await response.json();
+      console.log(resJSON);
+
+      if (resJSON.email === email && resJSON.senha === senha) {
+        alert("Usuário ainda não foi aprovado pelo Administrador!");
+        return;
+      }
+      else{
+        alert("Usuário invalido");
+        return;
+      }
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
+  //função que verifica se o usuario existe
+  const validar_login = async () => {
     var email = document.getElementById("email").value;
     var senha = document.getElementById("password").value;
 
-    const { token, error } = validar_login(email, senha);
-
-    if (token) {
-      setToken(token);
-      //alert("Login sucess" + token);
-      return history.push('/');
+    if(email === "" || senha === ""){
+      alert("Campos não preenchidos");
+      return;
     }
-    else {
-      //alert("Login Fail");
+
+    try {
+      const body = { email, senha };
+      const response = await fetch(Portas().serverHost + "/alunos/verify",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const resJSON = await response.json();
+      console.log(resJSON)
+
+      if (resJSON.email === email && resJSON.senha === senha) {
+        login(resJSON, email, senha);
+      }
+      else{
+        validar_login_pendentes(email, senha);
+      }
+
+
+    } catch (err) {
+      console.error(err.message);
     }
   }
-
-
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -155,8 +186,7 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={login}
-              href="/Dashboard"
+              onClick={validar_login}
             >
               Entrar
             </Button>

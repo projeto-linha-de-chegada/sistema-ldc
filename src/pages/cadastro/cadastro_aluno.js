@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -12,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import validator from 'validator';
+import Portas from "../../portas";
+const { v4: uuidv4 } = require('uuid');
 
 function Copyright() {
     return (
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh',
     },
     image: {
-        backgroundImage: lista_bgs[2],
+        backgroundImage: "url('./background/bg1.jpg')",
         backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
         backgroundSize: 'cover',
@@ -56,29 +56,37 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-var lista_bgs = [
-    "url('./imgs_login/bg1.jpg')",
-    "url('./imgs_login/bg2.jpg')",
-    "url('./imgs_login/bg3.jpg')"];
-
-var controller = 0;
+const cursos = [
+    {
+        value: 'Engenharia de Software',
+        label: 'Engenharia de Software',
+    },
+    {
+        value: 'Ciência da Computação',
+        label: 'Ciência da Computação',
+    },
+    {
+        value: 'Engenharia Civil',
+        label: 'Engenharia Civil',
+    },
+    {
+        value: 'Engenharia da Produção',
+        label: 'Engenharia da Produção',
+    }
+];
 
 
 export default function SignInSide() {
     const classes = useStyles();
+    const [curso, setCurso] = React.useState('Engenharia de Software');
 
-    async function mudaImg() {
-        let imagem_atual = document.getElementById("image");
-        imagem_atual.style.backgroundImage = lista_bgs[controller];
-        controller++;
-        if (controller == lista_bgs.length) {
-            controller = 0;
-        }
-    }
+    const handleChangeCurso = (event) => {
+        setCurso(event.target.value);
+    };
 
-    let loop = setInterval(mudaImg, 5000);
 
     function validarCadastro() {
+
         var nome = document.getElementById("nome").value;
         var matricula = document.getElementById("matricula").value;
         var curso = document.getElementById("curso").value;
@@ -86,44 +94,58 @@ export default function SignInSide() {
         var cf_email = document.getElementById("cf_email").value;
         var senha = document.getElementById("senha").value;
         var cf_senha = document.getElementById("cf_senha").value;
-        var cpf = document.getElementById("cpf").value;
 
-        if(nome == "" || matricula == "" || curso == "" || email == "" || cf_email == ""
-            || senha == "" || cf_senha == "" || cpf == ""){
-                alert("Por favor, preencha todos os campos");
-                return;
-        }
-
-
-        if(validator.isNumeric(cpf) == false || cpf.length != 11){
-            alert("formato de cpf inválido");
+        if (nome === "" || matricula === "" || curso === "" || email === "" || cf_email === ""
+            || senha === "" || cf_senha === "") {
+            alert("Por favor, preencha todos os campos");
             return;
         }
 
-        if(validator.isEmail(email) == false){
+        if (validator.isEmail(email) === false) {
             alert("formato de email incorreto");
             return;
         }
 
-        if(email != cf_email){
+        if (email !== cf_email) {
             alert("Emails diferentes");
             return;
         }
-        
-        if(senha.length < 6){
+
+        if (senha.length < 6) {
             alert("Senha com menos de 6 digitos");
             return;
         }
 
-        if(senha != cf_senha){
+        if (senha !== cf_senha) {
             alert("Senhas diferentes")
             return;
         }
 
-        //campos de cadastro foram validados;
+        var usertoken = uuidv4();
 
-        
+        //inserção no banco de alunos que precisam ser aprovados pela administração
+        const insertAluno = async () => {
+            try {
+                const body = { nome, email, senha, matricula, curso, usertoken };
+                const response = await fetch(Portas().serverHost + "/alunos", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
 
+                var resJSON = await response.json();
+                alert(resJSON);
+
+                if(resJSON  === "Cadastro solicitado ao Administrador!"){
+                    window.location = "/";
+                }
+
+            } catch (err) {
+                console.log(err.message);
+            }
+        }
+
+        insertAluno();
     }
 
     return (
@@ -155,25 +177,25 @@ export default function SignInSide() {
                             id="matricula"
                             label="Matricula"
                             autoFocus
+                            style={{marginBottom: "15px"}}
                         />
                         <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="cpf"
-                            label="CPF (somente números)"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
                             id="curso"
-                            label="Curso"
-                            autoFocus
-                        />
+                            select
+                            label="curso"
+                            value={curso}
+                            onChange={handleChangeCurso}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            variant="outlined"
+                        >
+                            {cursos.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </TextField>
                         <TextField
                             variant="outlined"
                             margin="normal"
