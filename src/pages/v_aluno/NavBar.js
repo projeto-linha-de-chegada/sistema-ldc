@@ -9,9 +9,11 @@ import Container from 'react-bootstrap/Container';
 import StoreContext from '../../components/Store/Context';
 import { useContext } from 'react';
 
+
 export default function NavBar() {
     //auth 
     const { setToken } = useContext(StoreContext);
+    
     return (
         <div>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ marginBottom: "20px" }}>
