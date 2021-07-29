@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import NavBar from '../NavBar';
 import Grid from '@material-ui/core/Grid';
 import Portas from "../../../portas";
+import Path from "path";
 
 //auth
 import StoreContext from '../../../components/Store/Context';
@@ -286,12 +287,27 @@ export default function FormPropsTextFields() {
             }
         }
 
-        const insertAtividadeComPdf = async (formData) => {
+        const insertAtividadeComPdf = async () => {
             try {
-                console.log(selectedFile)
-                const body = { selectedFile, titulo, dataInicio, dataFim, descricao, link, quantHoras, selectedCategoria, selectedSubCategoria, token };
+                var nomePdf = token + Date.now() + Path.extname(selectedFile.name);
 
-                const response = await fetch(Portas().serverHost + "/atividades/pdf", {
+                const myInput = document.getElementById('inputPdf');
+                console.log(myInput.files[0]);
+
+                const responsePdf = await fetch(Portas().serverHost + "/atividades/pdf/"+ nomePdf,{
+                    method: "POST",
+                    body: myInput.files[0]
+                });
+
+                var resJSON1 = await responsePdf.json();
+                if(resJSON1 !== "PDF Cadastrado"){
+                    alert("Falha no Upload do arquivo");
+                    return;
+                }
+
+                const body = { nomePdf, titulo, dataInicio, dataFim, descricao, link, quantHoras, selectedCategoria, selectedSubCategoria, token };
+                console.log(body);
+                const response = await fetch(Portas().serverHost + "/atividades", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
@@ -324,10 +340,8 @@ export default function FormPropsTextFields() {
 
 
         if (isFilePicked) {
-            const formData = new FormData();
-            formData.append('File', selectedFile);
             console.log("Enviando com pdf: ")
-            insertAtividadeComPdf(formData);
+            insertAtividadeComPdf();
         }
         else {
             console.log("Enviando sem pdf")
@@ -335,7 +349,6 @@ export default function FormPropsTextFields() {
         }
 
     }
-
 
     return (
         <div>
@@ -450,9 +463,8 @@ export default function FormPropsTextFields() {
                                             variant="outlined" />
                                     </div>
                                     <div style={{ alignItems: "center", justifyContent: "center ", display: "flex", marginTop: "10px" }}>
-                                        <form method="post" encType="multipart/form-data" action="http://10.0.0.107:5000/atividades/pdf">
-                                            <input type="file" name="file" accept="application/pdf" onChange={changeHandler} style={{marginRight: "20px"}}/>
-                                            <input type="submit" value="Upload"></input>
+                                        <form id="pdfField" method="post" encType="multipart/form-data">
+                                            <input id="inputPdf" type="file" name="file" accept="application/pdf" onChange={changeHandler} style={{ marginRight: "20px" }} />
                                         </form>
                                     </div>
                                     <div style={{ alignItems: "center", justifyContent: "center ", display: "flex", marginTop: "5px" }}>
