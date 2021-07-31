@@ -3,6 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
 import Button from '@material-ui/core/Button';
 import NavBar from '../NavBar';
 import Grid from '@material-ui/core/Grid';
@@ -104,6 +109,16 @@ export default function FormPropsTextFields() {
     const [selectedFile, setSelectedFile] = useState();
     const [isFilePicked, setIsFilePicked] = useState(false);
     const { token } = useContext(StoreContext);
+    const [selectedDateInicio, setSelectedDateInicio] = React.useState(new Date());
+    const [selectedDateFim, setSelectedDateFim] = React.useState(new Date());
+
+    const handleDateChangeInicio = (date) => {
+        setSelectedDateInicio(date);
+    };
+
+    const handleDateChangeFim = (date) => {
+        setSelectedDateFim(date);
+    };
 
     const changeHandler = (event) => {
         try {
@@ -152,43 +167,32 @@ export default function FormPropsTextFields() {
     }
 
     const cadastrar = () => {
+
         var titulo = document.getElementById("titulo").value;
         var descricao = document.getElementById("descricao").value;
         var link = document.getElementById("link").value;
         var quantHoras = parseInt(document.getElementById("quantHoras").value, 10);
-        var dataInicio = document.getElementById("dataInicio").value;
-        var dataFim = document.getElementById("dataFim").value;
         var selectedCategoria = document.getElementById("categoria").value;
         var selectedSubCategoria = document.getElementById("subcategoria").value;
+        var dataInicio = "";
+        var dataFim = "";
 
-        //fix component bug
-        if (dataInicio !== "") {
-            if (dataInicio[4] !== "-" || dataInicio[7] !== "-") {
-                alert("Data inválida");
-                return;
-            }
-        }
 
-        if (dataFim !== "") {
-            if (dataFim[4] !== "-" || dataFim[7] !== "-") {
-                alert("Data inválida");
-                return;
-            }
+        if (selectedDateInicio.toString() === "Invalid Date") {
+            alert("Erro na data de Inicio");
+            return;
         }
-
-        if (dataFim !== "") {
-            dataFim = dataFim[8] + dataFim[9] + dataFim[7] + dataFim[5] + dataFim[6] + dataFim[4] + dataFim[0] + dataFim[1] + dataFim[2] + dataFim[3];
-        }
-        if (dataInicio !== "") {
-            dataInicio = dataInicio[8] + dataInicio[9] + dataInicio[7] + dataInicio[5] + dataInicio[6] + dataInicio[4] + dataInicio[0] + dataInicio[1] + dataInicio[2] + dataInicio[3];
+        if (selectedDateFim.toString() === "Invalid Date") {
+            alert("Erro na data de Fim");
+            return;
         }
 
         console.log("Titulo: " + titulo + " descrição: " + descricao + " quantHoras: " + quantHoras + " link: " + link
-            + " dataInicio: " + dataInicio + " dataFim: " + dataFim + " categoria: " + selectedCategoria + " subcategoria: " + selectedSubCategoria);
+            + " dataInicio: " + selectedDateInicio + " dataFim: " + selectedDateFim + " categoria: " + selectedCategoria + " subcategoria: " + selectedSubCategoria);
 
         //tratamentos
 
-        if (titulo === "" || descricao === "" || quantHoras === "" || dataInicio === "" || dataFim === "") {
+        if (titulo === "" || descricao === "" || quantHoras === "") {
             alert("Preencha todos os campos marcados com (*)");
             return;
         }
@@ -199,49 +203,49 @@ export default function FormPropsTextFields() {
         }
 
         //tratamentos data
-        //ano
-        var anoFim = dataFim[6] + dataFim[7] + dataFim[8] + dataFim[9];
-        var anoInicio = dataInicio[6] + dataInicio[7] + dataInicio[8] + dataInicio[9];
+        var anoFim = selectedDateFim.getFullYear();
+        var anoInicio = selectedDateInicio.getFullYear();
         var intAnoFim = parseInt(anoFim, 10);
         var intAnoInicio = parseInt(anoInicio, 10);
         var result = intAnoFim - intAnoInicio;
-
         var anoAtual = new Date().getFullYear();
+
         //se ano for no futuro
-        if (intAnoFim > anoAtual) {
-            alert("Ano de fim inválido");
+        if (intAnoInicio > anoAtual) {
+            alert("Ano de inicio é está no futuro");
             return;
         }
-        if (intAnoInicio > anoAtual) {
-            alert("Ano de inicio inválido");
+
+        if (intAnoFim > anoAtual) {
+            alert("Ano de fim está no futuro");
             return;
         }
 
         //se ano inicio é depois do ano fim 
         if (result < 0) {
-            alert("Data inválida");
+            alert("Ano de inicio depois do ano de fim");
             return;
         }
 
         //mes
-        var mesFim = dataFim[3] + dataFim[4];
-        var mesInicio = dataInicio[3] + dataInicio[4];
+        var mesFim = selectedDateFim.getMonth() + 1;
+        var mesInicio = selectedDateInicio.getMonth() + 1;
         var intMesFim = parseInt(mesFim, 10);
         var intMesInicio = parseInt(mesInicio, 10);
         var result1 = intMesFim - intMesInicio;
 
         var mesAtual = new Date().getMonth() + 1;
-        //console.log(mesAtual + " " + intMesInicio + " " + intMesFim);
+        console.log(mesAtual + " " + intMesInicio + " " + intMesFim);
         //se mes for no futuro
         if (intAnoInicio === anoAtual) {
             if (mesAtual < intMesInicio) {
-                alert("Mês de inicio é no futuro");
+                alert("Mês de inicio está no futuro");
                 return;
             }
         }
         if (intAnoFim === anoAtual) {
             if (mesAtual < intMesFim) {
-                alert("Mês de fim é no futuro");
+                alert("Mês de fim está no futuro");
                 return;
             }
         }
@@ -250,15 +254,14 @@ export default function FormPropsTextFields() {
         if (result === 0) {
             //se mes inicio é depois de mes fim
             if (result1 < 0) {
-                alert("Periodo inválido");
+                alert("Mês de inicio depois do mês de fim");
                 return;
             }
         }
 
         //dia
-
-        var diaFim = dataFim[0] + dataFim[1];
-        var diaInicio = dataInicio[0] + dataInicio[1];
+        var diaFim = selectedDateFim.getDate();
+        var diaInicio = selectedDateInicio.getDate();
         var intDiaFim = parseInt(diaFim, 10);
         var intDiaInicio = parseInt(diaInicio, 10);
 
@@ -267,11 +270,11 @@ export default function FormPropsTextFields() {
         if (result === 0) {
             if (result1 === 0) {
                 if (diaAtual < intDiaInicio) {
-                    alert("Dia de inicio é no futuro");
+                    alert("Dia de inicio está no futuro");
                     return;
                 }
                 if (diaAtual < intDiaFim) {
-                    alert("Dia de fim é no futuro");
+                    alert("Dia de fim está no futuro");
                     return;
                 }
             }
@@ -281,11 +284,40 @@ export default function FormPropsTextFields() {
         if (result === 0) {
             if (result1 === 0) {
                 if (intDiaFim < intDiaInicio) {
-                    alert("Inicio depois do Fim");
+                    alert("Dia de Inicio depois do dia de Fim");
                     return;
                 }
             }
         }
+
+        //Tornar padrão de data para o postgres
+        var dia,mes,ano;
+        if (selectedDateInicio.getMonth() + 1 < 10) {
+            dia = selectedDateInicio.getDate();
+            mes = selectedDateInicio.getMonth()+1;
+            ano = selectedDateInicio.getFullYear();
+            dataInicio = dia + "-0" + mes + "-" + ano; 
+        }
+        else{
+            dia = selectedDateInicio.getDate();
+            mes = selectedDateInicio.getMonth()+1;
+            ano = selectedDateInicio.getFullYear();
+            dataInicio = dia + "-" + mes + "-" + ano;
+        }
+
+        if (selectedDateFim.getMonth() + 1 < 10) {
+            dia = selectedDateFim.getDate();
+            mes = selectedDateFim.getMonth()+1;
+            ano = selectedDateFim.getFullYear();
+            dataFim = dia + "-0" + mes + "-" + ano; 
+        }
+        else{
+            dia = selectedDateFim.getDate();
+            mes = selectedDateFim.getMonth()+1;
+            ano = selectedDateFim.getFullYear();
+            dataFim = dia + "-" + mes + "-" + ano;
+        }
+
 
         const insertAtividadeComPdf = async () => {
             try {
@@ -294,13 +326,13 @@ export default function FormPropsTextFields() {
                 const myInput = document.getElementById('inputPdf');
                 console.log(myInput.files[0]);
 
-                const responsePdf = await fetch(Portas().serverHost + "/atividades/pdf/"+ nomePdf,{
+                const responsePdf = await fetch(Portas().serverHost + "/atividades/pdf/" + nomePdf, {
                     method: "POST",
                     body: myInput.files[0]
                 });
 
                 var resJSON1 = await responsePdf.json();
-                if(resJSON1 !== "PDF Cadastrado"){
+                if (resJSON1 !== "PDF Cadastrado") {
                     alert("Falha no Upload do arquivo");
                     return;
                 }
@@ -323,7 +355,8 @@ export default function FormPropsTextFields() {
 
         const insertAtividade = async () => {
             try {
-                const body = { titulo, dataInicio, dataFim, descricao, link, quantHoras, selectedCategoria, selectedSubCategoria, token };
+                var nomePdf = "";
+                const body = { titulo, dataInicio, dataFim, descricao, link, quantHoras, selectedCategoria, selectedSubCategoria, token, nomePdf };
                 const response = await fetch(Portas().serverHost + "/atividades", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -371,25 +404,31 @@ export default function FormPropsTextFields() {
                                             label="Titulo*"
                                             type="search"
                                             variant="outlined" />
-
-                                        <TextField
-                                            id="dataInicio"
-                                            label="Inicio da Atividade*"
-                                            type="date"
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-
-                                        <TextField
-                                            id="dataFim"
-                                            label="Fim da Atividade*"
-                                            type="date"
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-
+                                        
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                <KeyboardDatePicker
+                                                    margin="normal"
+                                                    id="DataInicio"
+                                                    label="Data de Inicio*"
+                                                    format="dd/MM/yyyy"
+                                                    value={selectedDateInicio}
+                                                    onChange={handleDateChangeInicio}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                />
+                                                <KeyboardDatePicker
+                                                    margin="normal"
+                                                    id="dataFim"
+                                                    label="Data de Fim*"
+                                                    format="dd/MM/yyyy"
+                                                    value={selectedDateFim}
+                                                    onChange={handleDateChangeFim}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                />
+                                            </MuiPickersUtilsProvider>
 
                                         <TextField
                                             style={{ marginBottom: "10px", marginTop: "10px" }}
