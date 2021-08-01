@@ -14,22 +14,22 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Deposits() {
+export default function HorasTotais() {
   const classes = useStyles();
   return (
     <React.Fragment>
       <Title>Horas totais</Title>
-      <Typography component="p" variant="h4">
-        288H
-      </Typography>
-      <Typography color="textSecondary" className={classes.depositContext}>
-        Atualizado em 28/01/2021
-      </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          Ver horas cadastradas
-        </Link>
-      </div>
+        <Typography component="p" variant="h4">
+          288H
+        </Typography>
+        <Typography color="textSecondary" className={classes.depositContext}>
+          Atualizado em 28/01/2021
+        </Typography>
+        <div>
+          <Link color="primary" href="#" onClick={preventDefault}>
+            Ver horas cadastradas
+          </Link>
+        </div>
     </React.Fragment>
   );
 }

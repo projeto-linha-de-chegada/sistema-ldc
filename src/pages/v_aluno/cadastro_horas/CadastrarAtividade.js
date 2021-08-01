@@ -297,25 +297,37 @@ export default function FormPropsTextFields() {
             mes = selectedDateInicio.getMonth()+1;
             ano = selectedDateInicio.getFullYear();
             dataInicio = dia + "-0" + mes + "-" + ano; 
+            if(dia < 10){
+                dataInicio = "0" + dia + "-0" + mes + "-" + ano; 
+            }
         }
         else{
             dia = selectedDateInicio.getDate();
             mes = selectedDateInicio.getMonth()+1;
             ano = selectedDateInicio.getFullYear();
             dataInicio = dia + "-" + mes + "-" + ano;
+            if(dia < 10){
+                dataInicio = "0" + dia + "-" + mes + "-" + ano; 
+            }
         }
 
         if (selectedDateFim.getMonth() + 1 < 10) {
             dia = selectedDateFim.getDate();
             mes = selectedDateFim.getMonth()+1;
             ano = selectedDateFim.getFullYear();
-            dataFim = dia + "-0" + mes + "-" + ano; 
+            dataFim = dia + "-0" + mes + "-" + ano;
+            if(dia < 10){
+                dataFim = "0" + dia + "-0" + mes + "-" + ano; 
+            }
         }
         else{
             dia = selectedDateFim.getDate();
             mes = selectedDateFim.getMonth()+1;
             ano = selectedDateFim.getFullYear();
             dataFim = dia + "-" + mes + "-" + ano;
+            if(dia < 10){
+                dataFim = "0" + dia + "-" + mes + "-" + ano; 
+            }
         }
 
 
@@ -403,7 +415,9 @@ export default function FormPropsTextFields() {
                                             id="titulo"
                                             label="Titulo*"
                                             type="search"
-                                            variant="outlined" />
+                                            variant="outlined"
+                                            inputProps={{ maxLength: 199}}
+                                             />
                                         
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <KeyboardDatePicker
@@ -477,6 +491,9 @@ export default function FormPropsTextFields() {
                                                 shrink: true,
                                             }}
                                             variant="outlined"
+                                            onInput = {(e) =>{
+                                                e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,4)
+                                            }}
                                         />
 
                                         <TextField
@@ -485,7 +502,8 @@ export default function FormPropsTextFields() {
                                             multiline
                                             rows={4}
                                             type="search"
-                                            variant="outlined" />
+                                            variant="outlined"
+                                            inputProps={{ maxLength: 4999}} />
 
                                     </div>
                                     <div>
@@ -499,7 +517,8 @@ export default function FormPropsTextFields() {
                                             id="link"
                                             label="Link"
                                             type="search"
-                                            variant="outlined" />
+                                            variant="outlined"
+                                            inputProps={{ maxLength: 999}} />
                                     </div>
                                     <div style={{ alignItems: "center", justifyContent: "center ", display: "flex", marginTop: "10px" }}>
                                         <form id="pdfField" method="post" encType="multipart/form-data">

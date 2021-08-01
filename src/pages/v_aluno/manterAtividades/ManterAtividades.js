@@ -142,18 +142,18 @@ export default function ManterAtividades() {
 
     useEffect(() => {
         getAtividades();
-    },[]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const openLink = (id) =>{
-        if(id === "" || id === null || id === undefined){
+    const openLink = (id) => {
+        if (id === "" || id === null || id === undefined) {
             alert("Não foi cadastrado Link nessa atividade");
-        return;
+            return;
         }
         window.open(id, '_blank');
     }
 
     const openPdf = (id) => {
-        if(id === "" || id === null || id === undefined){
+        if (id === "" || id === null || id === undefined) {
             alert("Não foi cadastrado pdf nessa atividade");
             return;
         }
@@ -179,7 +179,7 @@ export default function ManterAtividades() {
     }
 
     const toDate = (data) => {
-        const newDate = new Date(data[6] + data[7] + data[8] + data[9] + "-" + data[3] + data[4] + "-" + data[0] +data[1] + "T06:00:00Z");
+        const newDate = new Date(data[6] + data[7] + data[8] + data[9] + "-" + data[3] + data[4] + "-" + data[0] + data[1] + "T06:00:00Z");
         return newDate;
     }
 
@@ -213,18 +213,18 @@ export default function ManterAtividades() {
         console.log(id)
     }
 
-    const updateAtividade = async() => {
+    const updateAtividade = async () => {
         console.log("updating row: " + editID);
         var selectedCategoria = categoria;
         var selectedSubCategoria = subCategoria;
         var dataInicio = "";
         var dataFim = "";
 
-        if(selectedDateInicio.toString() === "Invalid Date"){
+        if (selectedDateInicio.toString() === "Invalid Date") {
             alert("Erro na data de Inicio");
             return;
         }
-        if(selectedDateFim.toString() === "Invalid Date"){
+        if (selectedDateFim.toString() === "Invalid Date") {
             alert("Erro na data de Fim");
             return;
         }
@@ -257,7 +257,7 @@ export default function ManterAtividades() {
             alert("Ano de inicio é está no futuro");
             return;
         }
-        
+
         if (intAnoFim > anoAtual) {
             alert("Ano de fim está no futuro");
             return;
@@ -270,8 +270,8 @@ export default function ManterAtividades() {
         }
 
         //mes
-        var mesFim = selectedDateFim.getMonth()+1;
-        var mesInicio = selectedDateInicio.getMonth()+1;
+        var mesFim = selectedDateFim.getMonth() + 1;
+        var mesInicio = selectedDateInicio.getMonth() + 1;
         var intMesFim = parseInt(mesFim, 10);
         var intMesInicio = parseInt(mesInicio, 10);
         var result1 = intMesFim - intMesInicio;
@@ -332,31 +332,43 @@ export default function ManterAtividades() {
         }
 
         //Tornar padrão de data para o postgres
-        var dia,mes,ano;
+        var dia, mes, ano;
         if (selectedDateInicio.getMonth() + 1 < 10) {
             dia = selectedDateInicio.getDate();
-            mes = selectedDateInicio.getMonth()+1;
+            mes = selectedDateInicio.getMonth() + 1;
             ano = selectedDateInicio.getFullYear();
-            dataInicio = dia + "-0" + mes + "-" + ano; 
+            dataInicio = dia + "-0" + mes + "-" + ano;
+            if (dia < 10) {
+                dataInicio = "0" + dia + "-0" + mes + "-" + ano;
+            }
         }
-        else{
+        else {
             dia = selectedDateInicio.getDate();
-            mes = selectedDateInicio.getMonth()+1;
+            mes = selectedDateInicio.getMonth() + 1;
             ano = selectedDateInicio.getFullYear();
             dataInicio = dia + "-" + mes + "-" + ano;
+            if (dia < 10) {
+                dataInicio = "0" + dia + "-" + mes + "-" + ano;
+            }
         }
 
         if (selectedDateFim.getMonth() + 1 < 10) {
             dia = selectedDateFim.getDate();
-            mes = selectedDateFim.getMonth()+1;
+            mes = selectedDateFim.getMonth() + 1;
             ano = selectedDateFim.getFullYear();
-            dataFim = dia + "-0" + mes + "-" + ano; 
+            dataFim = dia + "-0" + mes + "-" + ano;
+            if (dia < 10) {
+                dataFim = "0" + dia + "-0" + mes + "-" + ano;
+            }
         }
-        else{
+        else {
             dia = selectedDateFim.getDate();
-            mes = selectedDateFim.getMonth()+1;
+            mes = selectedDateFim.getMonth() + 1;
             ano = selectedDateFim.getFullYear();
             dataFim = dia + "-" + mes + "-" + ano;
+            if (dia < 10) {
+                dataFim = "0" + dia + "-" + mes + "-" + ano;
+            }
         }
 
         //fazer o update 
@@ -398,7 +410,7 @@ export default function ManterAtividades() {
         const updateAtividadeSemPdf = async () => {
             try {
                 const nomePdf = pdf;
-                const body = { nomePdf, titulo, dataInicio, dataFim, descricao, docLink, quantHoras, selectedCategoria, selectedSubCategoria, token};
+                const body = { nomePdf, titulo, dataInicio, dataFim, descricao, docLink, quantHoras, selectedCategoria, selectedSubCategoria, token };
                 const response = await fetch(Portas().serverHost + "/atividades/" + editID, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -428,19 +440,19 @@ export default function ManterAtividades() {
     return (
         <div>
             <NavBar></NavBar>
-            <Paper elevation={12} style={{ marginLeft: "10px", marginRight: "10px" , marginBottom: "10px"}}>
+            <Paper elevation={12} style={{ marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}>
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th style={{textAlign: "center"}}>Titulo</th>
+                            <th style={{ textAlign: "center" }}>Titulo</th>
                             <th>Inicio</th>
                             <th>Fim</th>
-                            <th style={{textAlign: "center"}}>Categoria</th>
-                            <th style={{textAlign: "center"}}>SubCategoria</th>
-                            <th style={{textAlign: "center"}}>QuantHoras</th>
-                            <th style={{textAlign: "center"}}>Descrição</th>
-                            <th style={{textAlign: "center"}}>Link</th>
-                            <th style={{textAlign: "center"}}>Pdf</th>
+                            <th style={{ textAlign: "center" }}>Categoria</th>
+                            <th style={{ textAlign: "center" }}>SubCategoria</th>
+                            <th style={{ textAlign: "center" }}>QuantHoras</th>
+                            <th style={{ textAlign: "center" }}>Descrição</th>
+                            <th style={{ textAlign: "center" }}>Link</th>
+                            <th style={{ textAlign: "center" }}>Pdf</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -475,6 +487,7 @@ export default function ManterAtividades() {
                                                 type="search"
                                                 variant="outlined"
                                                 value={titulo}
+                                                inputProps={{ maxLength: 199 }}
                                                 onChange={e => setTitulo(e.target.value)} />
 
                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -545,6 +558,9 @@ export default function ManterAtividades() {
                                                 }}
                                                 variant="outlined"
                                                 value={quantHoras}
+                                                onInput={(e) => {
+                                                    e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
+                                                }}
                                                 onChange={e => setQuantHoras(e.target.value)}
                                             />
                                             <TextField
@@ -555,6 +571,7 @@ export default function ManterAtividades() {
                                                 type="search"
                                                 variant="outlined"
                                                 value={descricao}
+                                                inputProps={{ maxLength: 4999 }}
                                                 onChange={e => setDescricao(e.target.value)} />
 
                                             <TextField
@@ -563,9 +580,10 @@ export default function ManterAtividades() {
                                                 type="search"
                                                 variant="outlined"
                                                 value={docLink}
+                                                inputProps={{ maxLength: 999 }}
                                                 onChange={e => setDocLink(e.target.value)} />
 
-                                            <form  method="post" encType="multipart/form-data">
+                                            <form method="post" encType="multipart/form-data">
                                                 <input type="file" name="file" accept="application/pdf" onChange={changeHandlerPdf} style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }} />
                                             </form>
                                             <h4 style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px" }}>Somente arquivos .pdf</h4>
