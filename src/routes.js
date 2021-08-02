@@ -7,6 +7,10 @@ import Aluno_Home from "./pages/v_aluno/view_inicial/Home";
 import Aluno_Cadastro from "./pages/cadastro/cadastro_aluno";
 import Aluno_Cadastrar_Atividade from "./pages/v_aluno/cadastro_horas/CadastrarAtividade";
 import Aluno_Manter_Atividades from "./pages/v_aluno/manterAtividades/ManterAtividades";
+import Admin_Home from "./pages/v_admin/view_inicial/Home";
+import Admin_Manter_Alunos from "./pages/v_admin/manterAlunos/ManterAlunos";
+import Admin_Aprovar_Alunos from "./pages/v_admin/aprovarAlunos/AprovarAlunos";
+import Admin_Cadastrar_Professor from "./pages/v_admin/cadastroProfessor/CadastroProfessor";
 
 //auth
 import StoreProvider from './components/Store/Provider';
@@ -22,6 +26,10 @@ export default function Routes() {
                     <PrivateRoute path="/alunoHome" component={Aluno_Home} />
                     <PrivateRoute path="/manterAtividades" component={Aluno_Manter_Atividades} />
                     <PrivateRoute path="/cadastrarAtividade" component={Aluno_Cadastrar_Atividade} />
+                    <PrivateRoute path="/adminHome" component={Admin_Home} />
+                    <PrivateRoute path="/manterAlunos" component={Admin_Manter_Alunos} />
+                    <PrivateRoute path="/aprovarAlunos" component={Admin_Aprovar_Alunos} />
+                    <PrivateRoute path="/cadastroProfessor" component={Admin_Cadastrar_Professor} />
                 </Switch>
             </StoreProvider>
         </BrowserRouter>

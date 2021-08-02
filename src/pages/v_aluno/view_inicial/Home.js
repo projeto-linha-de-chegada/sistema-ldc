@@ -110,113 +110,123 @@ export default function Home() {
     ];
 
     const somarAtividades = (resJSON) => {
-            //somar atividades
-            var i_ = 0;
-            var ii_ = 0; 
-            var iii_ = 0;
-            var iv_ = 0;
-            var v_ = 0; 
-            var vi_ = 0;
-            var vii_ = 0;
-            console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_)
-            console.log(resJSON);
-            for (var j = 0; j < resJSON.length; j++) {
-                switch (resJSON[j].categoria) {
-                    case 'I':
-                      i_ = i_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                      case 'II':
-                      ii_ = ii_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                      case 'III':
-                      iii_ = iii_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                      case 'IV':
-                      iv_ = iv_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                      case 'V':
-                      v_ = v_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                      case 'VI':
-                      vi_ =  vi_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                      case 'VII':
-                      vii_ = vii_+ parseFloat(resJSON[j].quantidade_horas);
-                      break;
-                    default:
-                      console.log("Algo inesperado ocorreu");
-                  }
+        //somar atividades
+        var i_ = 0;
+        var ii_ = 0;
+        var iii_ = 0;
+        var iv_ = 0;
+        var v_ = 0;
+        var vi_ = 0;
+        var vii_ = 0;
+        console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_)
+        console.log(resJSON);
+        for (var j = 0; j < resJSON.length; j++) {
+            switch (resJSON[j].categoria) {
+                case 'I':
+                    i_ = i_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                case 'II':
+                    ii_ = ii_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                case 'III':
+                    iii_ = iii_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                case 'IV':
+                    iv_ = iv_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                case 'V':
+                    v_ = v_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                case 'VI':
+                    vi_ = vi_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                case 'VII':
+                    vii_ = vii_ + parseFloat(resJSON[j].quantidade_horas);
+                    break;
+                default:
+                    console.log("Algo inesperado ocorreu");
             }
-            
-            console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_);
-            //tratar excessos
-            
-            if(i_ > 96){
-                i_ = 96;
-            }
-            if(ii_ > 64){
-                ii_ = 64;
-            }
-            if(iii_ > 32){
-                iii_ = 32;
-            }
-            if(iv_ > 64){
-                iv_ = 64;
-            }
-            if(v_ > 96){
-                v_ = 96;
-            }
-            if(vi_ > 48){
-                vi_ = 48;
-            }
-            if(vii_ > 48){
-                vii_ = 48;
-            }
+        }
 
-            setOptions({
-                title: 'Proporção das horas Cadastradas por critério'
-            });
+        console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_);
+        //tratar excessoes
 
-            setOptionsTotal({
-                title: 'Progresso Total para Engenharia de Software'
-            });
+        if (i_ > 96) {
+            i_ = 96;
+        }
+        if (ii_ > 64) {
+            ii_ = 64;
+        }
+        if (iii_ > 32) {
+            iii_ = 32;
+        }
+        if (iv_ > 64) {
+            iv_ = 64;
+        }
+        if (v_ > 96) {
+            v_ = 96;
+        }
+        if (vi_ > 48) {
+            vi_ = 48;
+        }
+        if (vii_ > 48) {
+            vii_ = 48;
+        }
 
-            setOptionsBar({
-                title: 'Progresso por categorias para Engenharia de Software'
-            });
+        setOptions({
+            title: 'Proporção das horas Cadastradas por critério'
+        });
 
-            setDataTotal(
-                [
-                    ['Categorias', 'Horas Cadastradas', 'Horas necessárias para o curso'],
-                    ['Contador de Horas', i_ + ii_ + iii_ + iv_ + v_ + vi_ + vii_, 288],
-                ]
-            )
+        setOptionsTotal({
+            title: 'Progresso Total para Engenharia de Software'
+        });
 
+        setOptionsBar({
+            title: 'Progresso por categorias para Engenharia de Software'
+        });
+
+        setDataTotal(
+            [
+                ['Categorias', 'Horas Cadastradas', 'Horas necessárias para o curso'],
+                ['Contador de Horas', i_ + ii_ + iii_ + iv_ + v_ + vi_ + vii_, 288],
+            ]
+        )
+
+        setData(
+            [
+                ['A', 'Horas inseridas'],
+                ['I', i_],
+                ['II', ii_],
+                ['III', iii_],
+                ['IV', iv_],
+                ['V', v_],
+                ['VI', vi_],
+                ['VII', vii_],
+            ]
+        )
+
+        setDataBar(
+            [
+                ['Categorias', 'Horas Cadastradas', 'Limite da categoria'],
+                ['Categoria I', i_, 96],
+                ['Categoria II', ii_, 64],
+                ['Categoria III', iii_, 32],
+                ['Categoria IV', iv_, 64],
+                ['Categoria V', v_, 96],
+                ['Categoria VI', vi_, 48],
+                ['Categoria VII', vii_, 48],
+            ]
+        )
+
+        if( i_ === 0 && ii_ === 0 && iii_ === 0 && iv_ === 0 && v_ === 0 && vi_ === 0 && vii_ === 0){
             setData(
                 [
                     ['A', 'Horas inseridas'],
-                    ['I', i_],
-                    ['II', ii_],
-                    ['III', iii_],
-                    ['IV', iv_],
-                    ['V', v_],
-                    ['VI', vi_],
-                    ['VII', vii_],
+                    ['Nenhuma Atividade Inserida', 1],
+                    
                 ]
             )
-
-            setDataBar(
-                [
-                    ['Categorias', 'Horas Cadastradas', 'Limite da categoria'],
-                    ['Categoria I', i_, 96],
-                    ['Categoria II', ii_, 64],
-                    ['Categoria III', iii_, 32],
-                    ['Categoria IV', iv_, 64],
-                    ['Categoria V', v_, 96],
-                    ['Categoria VI', vi_, 48],
-                    ['Categoria VII', vii_, 48],
-                ]
-            )
+        }
     }
 
     //pegar registros de atividades

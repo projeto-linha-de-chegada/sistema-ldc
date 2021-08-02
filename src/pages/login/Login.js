@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -62,10 +62,39 @@ export default function SignInSide() {
   const classes = useStyles();
   const { setToken } = useContext(StoreContext);
   const { token } = useContext(StoreContext);
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
-  //impede que o user entre na tela de login se já houver um login feito
   if (token) {
-    window.location = "/alunoHome";
+    const redirect = async () => {
+      try {
+        const response = await fetch(Portas().serverHost + "/verify/" + token,
+          {
+            method: "GET",
+          }
+        );
+
+        const resJSON = await response.json();
+        console.log(resJSON);
+
+        if (resJSON === "aluno") {
+          window.location = "/alunoHome";
+          return;
+        }
+        if (resJSON === "professor") {
+          window.location = "/professorHome";
+          return;
+        }
+        if (resJSON === "admin") {
+          window.location = "/adminHome";
+          return;
+        }
+        
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+    redirect();
   }
 
   const login = (resJSON, email, senha) => {
@@ -79,6 +108,34 @@ export default function SignInSide() {
       alert("Login falhou!");
     }
 
+  }
+
+  const validar_login_admin = async (email, senha) => {
+    try {
+      const body = { email, senha };
+      const response = await fetch(Portas().serverHost + "/admins/verify",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const resJSON = await response.json();
+      console.log(resJSON);
+
+      if (resJSON.email === email && resJSON.senha === senha && resJSON.ativo === true) {
+        login(resJSON, email, senha);
+        return;
+      }
+      else {
+        alert("Usuário inválido")
+        return;
+      }
+
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   //função que verifica se o usuario existe na tabela de pendentes
@@ -100,8 +157,8 @@ export default function SignInSide() {
         alert("Usuário ainda não foi aprovado pelo Administrador!");
         return;
       }
-      else{
-        alert("Usuário invalido");
+      else {
+        validar_login_admin(email, senha);
         return;
       }
 
@@ -112,10 +169,10 @@ export default function SignInSide() {
 
   //função que verifica se o usuario existe
   const validar_login = async () => {
-    var email = document.getElementById("email").value;
-    var senha = document.getElementById("password").value;
 
-    if(email === "" || senha === ""){
+    console.log(email + " " + senha);
+
+    if (email === "" || senha === "") {
       alert("Campos não preenchidos");
       return;
     }
@@ -133,10 +190,10 @@ export default function SignInSide() {
       const resJSON = await response.json();
       console.log(resJSON)
 
-      if (resJSON.email === email && resJSON.senha === senha) {
+      if (resJSON.email === email && resJSON.senha === senha && resJSON.ativo === true) {
         login(resJSON, email, senha);
       }
-      else{
+      else {
         validar_login_pendentes(email, senha);
       }
 
@@ -166,7 +223,9 @@ export default function SignInSide() {
               label="Email"
               name="email"
               autoComplete="email"
-              autoFocus
+              value={email}
+              inputProps={{ maxLength: 199 }}
+              onChange={e => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -178,6 +237,9 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={senha}
+              inputProps={{ maxLength: 49 }}
+              onChange={e => setSenha(e.target.value)}
             />
             {/* in button if wnat join with enter type="submit"*/}
             <Button
