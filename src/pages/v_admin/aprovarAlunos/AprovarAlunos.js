@@ -3,14 +3,20 @@ import NavBar from "../NavBar";
 import Portas from "../../../portas";
 import Paper from '@material-ui/core/Paper';
 import Table from 'react-bootstrap/Table';
+import Copyright from "../../copyright/Copyright";
+
+//auth
+import StoreContext from '../../../components/Store/Context';
+import { useContext } from 'react';
 
 export default function ManterAlunos() {
+    const { token } = useContext(StoreContext);
     const [alunos, setAlunos] = useState([]);
 
     //pegar registros de alunos pendentes
     const getAlunos = async () => {
         try {
-            const response = await fetch(Portas().serverHost + "/alunosPendentes",
+            const response = await fetch(Portas().serverHost + "/alunosPendentes/" + token,
                 {
                     method: "GET",
                 }
@@ -30,22 +36,49 @@ export default function ManterAlunos() {
 
     const liberarAcesso = (id) => {
         console.log("Liberando: " + id);
-        const addToAlunos = async() => {
+        const addToAlunos = async () => {
             try {
-                const response = await fetch(Portas().serverHost + "/liberarAcessoAluno/" + id,
+                const body = { id, token }
+                const response = await fetch(Portas().serverHost + "/liberarAcessoAluno",
                     {
-                        method: "GET",
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body)
                     }
                 );
                 var resJSON = await response.json();
                 alert(resJSON);
                 window.location = "/aprovarAlunos";
-    
+
             } catch (err) {
                 alert(err);
             }
         }
         addToAlunos();
+
+    }
+
+    const negarAcesso = (id) => {
+        console.log("Negando: " + id);
+        const removeFromAlunos = async () => {
+            try {
+                const body = { id, token }
+                const response = await fetch(Portas().serverHost + "/negarAcessoAluno",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body)
+                    }
+                );
+                var resJSON = await response.json();
+                alert(resJSON);
+                window.location = "/aprovarAlunos";
+
+            } catch (err) {
+                alert(err);
+            }
+        }
+        removeFromAlunos();
 
     }
 
@@ -80,6 +113,7 @@ export default function ManterAlunos() {
                                 <td>
                                     <button
                                         className="btn btn-danger"
+                                        onClick={() => negarAcesso(aluno.id)}
                                     >
                                         Negar Acesso
                                     </button>
@@ -89,6 +123,7 @@ export default function ManterAlunos() {
                     </tbody>
                 </Table>
             </Paper >
+            <Copyright></Copyright>
         </div>
     )
 }

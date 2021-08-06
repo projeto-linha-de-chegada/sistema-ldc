@@ -7,7 +7,11 @@ import NavBar from '../NavBar';
 import Grid from '@material-ui/core/Grid';
 import Portas from "../../../portas";
 import validator from 'validator';
+import Copyright from "../../copyright/Copyright";
 
+//auth
+import StoreContext from '../../../components/Store/Context';
+import { useContext } from 'react';
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -24,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 export default function CadastroProfessor() {
+    const { token } = useContext(StoreContext);
     const classes = useStyles();
     const [nome, setNome] = useState("");
     const [matricula, setMatricula] = useState("");
@@ -39,7 +45,7 @@ export default function CadastroProfessor() {
             const body = { nome, matricula, email, senha, confEmail, confSenha, usertoken };
             console.log(body);
 
-            const response = await fetch(Portas().serverHost + "/professores", {
+            const response = await fetch(Portas().serverHost + "/professores/" + token, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
@@ -47,6 +53,7 @@ export default function CadastroProfessor() {
 
             var resJSON = await response.json();
             alert(resJSON);
+            window.location = "/manterProfessores";
 
         } catch (err) { }
     }
@@ -165,7 +172,7 @@ export default function CadastroProfessor() {
                                     fullWidth
                                     variant="contained"
                                     color="primary"
-                                    style={{ marginTop: "10px" }}
+                                    style={{ marginTop: "10px", marginBottom: "20px" }}
                                     onClick={validarInsert}
                                 >
                                     Cadastrar
@@ -175,6 +182,7 @@ export default function CadastroProfessor() {
                     </Paper>
                 </Grid>
             </div>
+            <Copyright></Copyright>
         </div>
     )
 }

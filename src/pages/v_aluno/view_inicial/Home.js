@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import NavBar from "../NavBar";
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
@@ -12,24 +9,13 @@ import image1 from "./images/flexibilizacao.jpg";
 import Paper from '@material-ui/core/Paper';
 import { Chart } from "react-google-charts";
 import Portas from "../../../portas";
+import Copyright from "../../copyright/Copyright";
 
 
 //auth
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Direitos reservados ©'}
-            <Link color="primary" href="https://team-pldc.herokuapp.com/" target="_blank">
-                Projeto Linha de Chegada
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -295,9 +281,7 @@ export default function Home() {
                     />
                 </div>
             </Paper>
-            <Box pt={4}>
-                <Copyright />
-            </Box>
+            <Copyright></Copyright>
         </div>
     )
 }

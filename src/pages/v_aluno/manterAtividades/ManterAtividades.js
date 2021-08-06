@@ -13,10 +13,41 @@ import TextField from '@material-ui/core/TextField';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import Path from "path";
+import Copyright from "../../copyright/Copyright";
+import "./manterAtividades.css";
+import { makeStyles } from '@material-ui/core/styles';
 
 //auth
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: "center",
+        overflowX: "auto",
+    }, paper: {
+        marginLeft: "10px",
+        marginRight: "10px",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        overflowX: "auto",
+    },
+    root1: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
+
+}));
+
 
 var categorias = [
     { value: 'I', label: 'I', }, { value: 'II', label: 'II', }, { value: 'III', label: 'III', }, { value: 'IV', label: 'IV', }, { value: 'V', label: 'V', }, { value: 'VI', label: 'VI', }, { value: 'VII', label: 'VII', },
@@ -54,6 +85,7 @@ var subCategoriasVII = [
 
 export default function ManterAtividades() {
     const { token } = useContext(StoreContext);
+    const classes = useStyles();
     const [atividades, setAtividades] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [titulo, setTitulo] = useState();
@@ -477,130 +509,140 @@ export default function ManterAtividades() {
                                     <Modal
                                         open={open}
                                         onClose={handleClose}
+                                        classNames={{
+                                            
+                                            modal: 'customModal',
+                                          }}
 
                                     >
-                                        <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", }}>
-                                            <h2 style={{ textAlign: "center", marginTop: '10px' }}>Editar Atividade</h2>
-                                            <TextField
-                                                style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }}
-                                                label="Titulo*"
-                                                type="search"
-                                                variant="outlined"
-                                                value={titulo}
-                                                inputProps={{ maxLength: 199 }}
-                                                onChange={e => setTitulo(e.target.value)} />
+                                        <h1 style={{ textAlign: "center", marginTop: "30px" }}>Editar Atividade</h1>
+                                        <div className={classes.root}>
+                                            <form className={classes.root1} noValidate autoComplete="off">
+                                                <div style={{ alignItems: "center", justifyContent: "center ", display: "grid" }}>
+                                                    <TextField
+                                                        style={{ marginTop: "15px" }}
+                                                        label="Titulo*"
+                                                        type="search"
+                                                        variant="outlined"
+                                                        value={titulo}
+                                                        inputProps={{ maxLength: 199 }}
+                                                        onChange={e => setTitulo(e.target.value)} />
 
-                                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                <KeyboardDatePicker
-                                                    margin="normal"
-                                                    label="Data de Inicio*"
-                                                    format="dd/MM/yyyy"
-                                                    value={selectedDateInicio}
-                                                    onChange={handleDateChangeInicio}
-                                                    KeyboardButtonProps={{
-                                                        'aria-label': 'change date',
-                                                    }}
-                                                />
-                                                <KeyboardDatePicker
-                                                    margin="normal"
-                                                    label="Data de Fim*"
-                                                    format="dd/MM/yyyy"
-                                                    value={selectedDateFim}
-                                                    onChange={handleDateChangeFim}
-                                                    KeyboardButtonProps={{
-                                                        'aria-label': 'change date',
-                                                    }}
-                                                />
-                                            </MuiPickersUtilsProvider>
+                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                        <KeyboardDatePicker
+                                                            style={{ marginTop: "15px" }}
+                                                            margin="normal"
+                                                            label="Data de Inicio*"
+                                                            format="dd/MM/yyyy"
+                                                            value={selectedDateInicio}
+                                                            onChange={handleDateChangeInicio}
+                                                            KeyboardButtonProps={{
+                                                                'aria-label': 'change date',
+                                                            }}
+                                                        />
+                                                        <KeyboardDatePicker
+                                                            style={{ marginTop: "15px" }}
+                                                            margin="normal"
+                                                            label="Data de Fim*"
+                                                            format="dd/MM/yyyy"
+                                                            value={selectedDateFim}
+                                                            onChange={handleDateChangeFim}
+                                                            KeyboardButtonProps={{
+                                                                'aria-label': 'change date',
+                                                            }}
+                                                        />
+                                                    </MuiPickersUtilsProvider>
 
-                                            <TextField
+                                                    <TextField
+                                                        style={{ marginTop: "15px" }}
+                                                        select
+                                                        label="Categoria*"
+                                                        value={categoria}
+                                                        onChange={handleChangeCategoria}
+                                                        SelectProps={{
+                                                            native: true,
+                                                        }}
+                                                        variant="outlined"
+                                                    >
+                                                        {categorias.map((option) => (
+                                                            <option key={option.value} value={option.value}>
+                                                                {option.label}
+                                                            </option>
+                                                        ))}
+                                                    </TextField>
 
-                                                style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }}
-                                                select
-                                                label="Categoria*"
-                                                value={categoria}
-                                                onChange={handleChangeCategoria}
-                                                SelectProps={{
-                                                    native: true,
-                                                }}
-                                                variant="outlined"
-                                            >
-                                                {categorias.map((option) => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </TextField>
-                                            <TextField
-                                                style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }}
-                                                select
-                                                label="Sub Categoria*"
-                                                value={subCategoria}
-                                                onChange={handleChangeSubCategoria}
-                                                SelectProps={{
-                                                    native: true,
-                                                }}
-                                                variant="outlined"
-                                            >
-                                                {subCategorias.map((option) => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </TextField>
-                                            <TextField
-                                                style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }}
-                                                label="Quantidade de Horas*"
-                                                type="number"
-                                                defaultValue={0}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                variant="outlined"
-                                                value={quantHoras}
-                                                onInput={(e) => {
-                                                    e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
-                                                }}
-                                                onChange={e => setQuantHoras(e.target.value)}
-                                            />
-                                            <TextField
-                                                style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }}
-                                                label="Descrição*"
-                                                multiline
-                                                rows={4}
-                                                type="search"
-                                                variant="outlined"
-                                                value={descricao}
-                                                inputProps={{ maxLength: 4999 }}
-                                                onChange={e => setDescricao(e.target.value)} />
+                                                    <TextField
+                                                        style={{ marginTop: "15px" }}
+                                                        select
+                                                        label="Sub Categoria*"
+                                                        value={subCategoria}
+                                                        onChange={handleChangeSubCategoria}
+                                                        SelectProps={{
+                                                            native: true,
+                                                        }}
+                                                        variant="outlined"
+                                                    >
+                                                        {subCategorias.map((option) => (
+                                                            <option key={option.value} value={option.value}>
+                                                                {option.label}
+                                                            </option>
+                                                        ))}
+                                                    </TextField>
 
-                                            <TextField
-                                                style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }}
-                                                label="Link"
-                                                type="search"
-                                                variant="outlined"
-                                                value={docLink}
-                                                inputProps={{ maxLength: 999 }}
-                                                onChange={e => setDocLink(e.target.value)} />
+                                                    <TextField
+                                                        style={{ marginTop: "15px" }}
+                                                        label="Quantidade de Horas*"
+                                                        type="number"
+                                                        defaultValue={0}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        variant="outlined"
+                                                        value={quantHoras}
+                                                        onInput={(e) => {
+                                                            e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
+                                                        }}
+                                                        onChange={e => setQuantHoras(e.target.value)}
+                                                    />
 
-                                            <form method="post" encType="multipart/form-data">
-                                                <input type="file" name="file" accept="application/pdf" onChange={changeHandlerPdf} style={{ marginTop: "5px", marginLeft: "5px", marginBottom: "5px", marginRight: "5px" }} />
+                                                    <TextField
+                                                        style={{ marginTop: "15px" }}
+                                                        label="Descrição*"
+                                                        multiline
+                                                        rows={4}
+                                                        type="search"
+                                                        variant="outlined"
+                                                        value={descricao}
+                                                        inputProps={{ maxLength: 4999 }}
+                                                        onChange={e => setDescricao(e.target.value)} />
+
+                                                    <TextField
+                                                        style={{ marginTop: "15px" }}
+                                                        label="Link"
+                                                        type="search"
+                                                        variant="outlined"
+                                                        value={docLink}
+                                                        inputProps={{ maxLength: 999 }}
+                                                        onChange={e => setDocLink(e.target.value)} />
+                                                </div>
+                                                <form method="post" encType="multipart/form-data" style={{ marginTop: "15px", textAlign: "center" }}>
+                                                    <input type="file" name="file" accept="application/pdf" onChange={changeHandlerPdf} style={{ marginBottom: "5px", textAlign: "center" }} />
+                                                </form>
+                                                <h4 style={{ textAlign: "center", fontSize: "10px" }}>Somente arquivos .pdf</h4>
+                                                <button
+                                                    className="btn btn-success"
+                                                    onClick={updateAtividade}
+                                                    style={{ marginTop: "10px", marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}
+                                                >
+                                                    Editar
+                                                </button>
                                             </form>
-                                            <h4 style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px" }}>Somente arquivos .pdf</h4>
-                                        </div>
-                                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                            <button
-                                                className="btn btn-success"
-                                                onClick={updateAtividade}
-                                                style={{ marginTop: "10px", marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}
-                                            >
-                                                Editar
-                                            </button>
                                         </div>
                                     </Modal>
                                 </td>
                                 <td>
                                     <button
+
                                         className="btn btn-danger"
                                         onClick={() => handleDelete(atividade.id)}
                                     >
@@ -612,6 +654,7 @@ export default function ManterAtividades() {
                     </tbody>
                 </Table>
             </Paper >
+            <Copyright></Copyright>
         </div >
     )
 }

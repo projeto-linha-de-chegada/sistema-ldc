@@ -11,6 +11,8 @@ import Admin_Home from "./pages/v_admin/view_inicial/Home";
 import Admin_Manter_Alunos from "./pages/v_admin/manterAlunos/ManterAlunos";
 import Admin_Aprovar_Alunos from "./pages/v_admin/aprovarAlunos/AprovarAlunos";
 import Admin_Cadastrar_Professor from "./pages/v_admin/cadastroProfessor/CadastroProfessor";
+import Admin_Manter_Professores from "./pages/v_admin/manterProfessores/ManterProfessores";
+import Professor_Home from "./pages/v_professor/view_inicial/Home";
 
 //auth
 import StoreProvider from './components/Store/Provider';
@@ -30,6 +32,8 @@ export default function Routes() {
                     <PrivateRoute path="/manterAlunos" component={Admin_Manter_Alunos} />
                     <PrivateRoute path="/aprovarAlunos" component={Admin_Aprovar_Alunos} />
                     <PrivateRoute path="/cadastroProfessor" component={Admin_Cadastrar_Professor} />
+                    <PrivateRoute path="/manterProfessores" component={Admin_Manter_Professores} />
+                    <PrivateRoute path="/professorHome" component={Professor_Home} />
                 </Switch>
             </StoreProvider>
         </BrowserRouter>

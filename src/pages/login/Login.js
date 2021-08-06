@@ -110,6 +110,39 @@ export default function SignInSide() {
 
   }
 
+  const validar_login_professor = async (email, senha) => {
+    try {
+      const body = { email, senha };
+      const response = await fetch(Portas().serverHost + "/professores-verify",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const resJSON = await response.json();
+      console.log(resJSON);
+
+      if(resJSON.ativo === false){
+        alert("O administrador suspendeu seu acesso, se isso foi um erro, comunique-nos!");
+        return;
+      }
+
+      if (resJSON.email === email && resJSON.senha === senha) {
+        login(resJSON, email, senha);
+        return;
+      }
+      else {
+        alert("Usuário inválido")
+        return;
+      }
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   const validar_login_admin = async (email, senha) => {
     try {
       const body = { email, senha };
@@ -124,12 +157,17 @@ export default function SignInSide() {
       const resJSON = await response.json();
       console.log(resJSON);
 
-      if (resJSON.email === email && resJSON.senha === senha && resJSON.ativo === true) {
+      if(resJSON.ativo === false){
+        alert("O administrador suspendeu seu acesso, se isso foi um erro, comunique-nos!");
+        return;
+      }
+
+      if (resJSON.email === email && resJSON.senha === senha) {
         login(resJSON, email, senha);
         return;
       }
       else {
-        alert("Usuário inválido")
+        validar_login_professor(email, senha)
         return;
       }
 
@@ -190,7 +228,12 @@ export default function SignInSide() {
       const resJSON = await response.json();
       console.log(resJSON)
 
-      if (resJSON.email === email && resJSON.senha === senha && resJSON.ativo === true) {
+      if(resJSON.ativo === false){
+        alert("O administrador suspendeu seu acesso, se isso foi um erro, comunique-nos!");
+        return;
+      }
+
+      if (resJSON.email === email && resJSON.senha === senha) {
         login(resJSON, email, senha);
       }
       else {
