@@ -9,21 +9,20 @@ import Copyright from "../../copyright/Copyright";
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
 
-export default function ManterProfessores() {
+export default function ManterAvaliadores() {
     const { token } = useContext(StoreContext);
-    const [professores, setProfessores] = useState([]);
+    const [avaliadores, setAvaliadores] = useState([]);
 
-    //pegar registros de professores
-    const getProfessores = async () => {
+    const getAvaliadores = async () => {
         try {
-            const response = await fetch(Portas().serverHost + "/professores/" + token,
+            const response = await fetch(Portas().serverHost + "/avaliadores/" + token,
                 {
                     method: "GET",
                 }
             );
             var resJSON = await response.json();
             console.log(resJSON)
-            setProfessores(resJSON);
+            setAvaliadores(resJSON);
 
         } catch (err) {
             alert(err);
@@ -31,16 +30,16 @@ export default function ManterProfessores() {
     }
 
     useEffect(() => {
-        getProfessores();
+        getAvaliadores();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const desativarProfessor = async (id, ativo) => {
+    const desativarAvaliador = async (id, ativo) => {
         if(ativo === false){
             return;
         }
         try {
             const body = { id, token }
-            const response = await fetch(Portas().serverHost + "/desativarProfessor",
+            const response = await fetch(Portas().serverHost + "/desativarAvaliador",
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -49,7 +48,7 @@ export default function ManterProfessores() {
             );
             var resJSON = await response.json();
             alert(resJSON)
-            window.location = "/manterProfessores";
+            window.location = "/manterAvaliadores";
 
         } catch (err) {
             console.log(err);
@@ -57,13 +56,13 @@ export default function ManterProfessores() {
         }
     }
 
-    const ativarProfessor = async (id, ativo) => {
+    const ativarAvaliador = async (id, ativo) => {
         if(ativo === true){
             return;
         }
         try {
             const body = { id, token }
-            const response = await fetch(Portas().serverHost + "/ativarProfessor",
+            const response = await fetch(Portas().serverHost + "/ativarAvaliador",
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -72,7 +71,7 @@ export default function ManterProfessores() {
             );
             var resJSON = await response.json();
             alert(resJSON)
-            window.location = "/manterProfessores";
+            window.location = "/manterAvaliadores";
 
         } catch (err) {
             console.log(err);
@@ -94,16 +93,16 @@ export default function ManterProfessores() {
                         </tr>
                     </thead>
                     <tbody>
-                        {professores.map(professor => (
-                            <tr key={professor.id}>
-                                <td>{professor.nome}</td>
-                                <td>{professor.matricula}</td>
-                                <td>{professor.email}</td>
-                                <td>{professor.ativo.toString()}</td>
+                        {avaliadores.map(avaliador => (
+                            <tr key={avaliador.id}>
+                                <td>{avaliador.nome}</td>
+                                <td>{avaliador.matricula}</td>
+                                <td>{avaliador.email}</td>
+                                <td>{avaliador.ativo.toString()}</td>
                                 <td>
                                     <button
                                         className="btn btn-primary"
-                                        onClick={() => ativarProfessor(professor.id, professor.ativo)}
+                                        onClick={() => ativarAvaliador(avaliador.id, avaliador.ativo)}
                                     >
                                         Ativar
                                     </button>
@@ -111,7 +110,7 @@ export default function ManterProfessores() {
                                 <td>
                                     <button
                                         className="btn btn-danger"
-                                        onClick={() => desativarProfessor(professor.id, professor.ativo)}
+                                        onClick={() => desativarAvaliador(avaliador.id, avaliador.ativo)}
                                     >
                                         Suspender
                                     </button>

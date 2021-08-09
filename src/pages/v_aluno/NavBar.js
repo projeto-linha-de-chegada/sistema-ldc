@@ -17,41 +17,41 @@ export default function NavBar() {
   const { token } = useContext(StoreContext);
 
   if (token) {
-    if (token) {
-      const redirect = async () => {
-        try {
-          const response = await fetch(Portas().serverHost + "/verify/" + token,
-            {
-              method: "GET",
-            }
-          );
+    const redirect = async () => {
+      try {
+        const response = await fetch(Portas().serverHost + "/verify/" + token,
+          {
+            method: "GET",
+          }
+        );
 
-          const resJSON = await response.json();
-          console.log(resJSON);
+        const resJSON = await response.json();
+        console.log(resJSON);
 
-          if (resJSON === "aluno") {
-            return;
-          }
-          if (resJSON === "professor") {
-            window.location = "/professorHome";
-            return;
-          }
-          if (resJSON === "admin") {
-            window.location = "/adminHome";
-            return;
-          }
-          else {
-            setToken(null)
-          }
-
-        } catch (err) {
-          console.log(err.message);
+        if (resJSON === "aluno") {
+          return;
+        }
+        if (resJSON === "avaliador") {
+          window.location = "/avaliadorHome";
+          return;
+        }
+        if (resJSON === "admin") {
+          window.location = "/adminHome";
+          return;
+        }
+        else {
           setToken(null)
         }
+
+      } catch (err) {
       }
-      redirect();
     }
+    redirect();
   }
+  else{
+    window.location = "/";
+  }
+
 
 
   return (

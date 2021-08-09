@@ -241,8 +241,24 @@ export default function ManterAtividades() {
         setOpen(false);
     };
 
-    const handleDelete = (id) => {
-        console.log(id)
+    const handleDelete = async(id) => {
+        try {
+            const body = {token}
+            const response = await fetch(Portas().serverHost + "/atividades/" + id,
+                {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                }
+            );
+            var resJSON = await response.json();
+            alert(resJSON);
+            window.location = "/manterAtividades";
+
+        } catch (err) {
+            console.log(err);
+            alert("Houve um erro")
+        }
     }
 
     const updateAtividade = async () => {

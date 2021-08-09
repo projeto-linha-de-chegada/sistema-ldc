@@ -81,8 +81,8 @@ export default function SignInSide() {
           window.location = "/alunoHome";
           return;
         }
-        if (resJSON === "professor") {
-          window.location = "/professorHome";
+        if (resJSON === "avaliador") {
+          window.location = "/avaliadorHome";
           return;
         }
         if (resJSON === "admin") {
@@ -110,10 +110,10 @@ export default function SignInSide() {
 
   }
 
-  const validar_login_professor = async (email, senha) => {
+  const validar_login_avaliador = async (email, senha) => {
     try {
       const body = { email, senha };
-      const response = await fetch(Portas().serverHost + "/professores-verify",
+      const response = await fetch(Portas().serverHost + "/avaliadores-verify",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -167,7 +167,7 @@ export default function SignInSide() {
         return;
       }
       else {
-        validar_login_professor(email, senha)
+        validar_login_avaliador(email, senha)
         return;
       }
 

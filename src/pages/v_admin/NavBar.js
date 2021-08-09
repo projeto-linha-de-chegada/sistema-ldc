@@ -13,71 +13,71 @@ import { useContext } from 'react';
 
 
 export default function NavBar() {
-    //auth 
-    const { setToken } = useContext(StoreContext);
-    const { token } = useContext(StoreContext);
+  //auth 
+  const { setToken } = useContext(StoreContext);
+  const { token } = useContext(StoreContext);
 
-    if(token){
-        if (token) {
-            const redirect = async () => {
-              try {
-                const response = await fetch(Portas().serverHost + "/verify/" + token,
-                  {
-                    method: "GET",
-                  }
-                );
-        
-                const resJSON = await response.json();
-                console.log(resJSON);
-        
-                if (resJSON === "aluno") {
-                    window.location = "/alunoHome"
-                  return;
-                }
-                if (resJSON === "professor") {
-                  window.location = "/professorHome";
-                  return;
-                }
-                if (resJSON === "admin") {
-                  return;
-                }
-                else{
-                    setToken(null)
-                }
-                
-              } catch (err) {
-                console.log(err.message);
-                setToken(null)
-              }
-            }
-            redirect();
+  if (token) {
+    const redirect = async () => {
+      try {
+        const response = await fetch(Portas().serverHost + "/verify/" + token,
+          {
+            method: "GET",
           }
-    }
+        );
 
-    return (
-        <div>
-            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ marginBottom: "20px" }}>
-                <Container>
-                    <Avatar alt="Icone do sistema" src="plc_logo.ico" style={{ marginRight: "10px" }}></Avatar>
-                    <Navbar.Brand href="/adminHome">Banco de Horas</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav>
-                            <NavDropdown title="Controle de Alunos" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/aprovarAlunos">Aprovar Alunos</NavDropdown.Item>
-                                <NavDropdown.Item href="/manterAlunos">Manter Alunos</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Controle de Professores" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/cadastroProfessor">Cadastrar Professor</NavDropdown.Item>
-                                <NavDropdown.Item href="/manterProfessores">Manter Professores</NavDropdown.Item>
-                            </NavDropdown>
-                        <NavDropdown title="Opções" id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={() => setToken(null)}>Log Out</NavDropdown.Item>
-                        </NavDropdown>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        </div >
-    )
+        const resJSON = await response.json();
+        console.log(resJSON);
+
+        if (resJSON === "aluno") {
+          window.location = "/alunoHome"
+          return;
+        }
+        if (resJSON === "avaliador") {
+          window.location = "/avaliadorHome";
+          return;
+        }
+        if (resJSON === "admin") {
+          return;
+        }
+        else {
+          setToken(null)
+        }
+
+      } catch (err) {
+      }
+    }
+    redirect();
+  }
+  else{
+    window.location = "/";
+  }
+
+
+  return (
+    <div>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ marginBottom: "20px" }}>
+        <Container>
+          <Avatar alt="Icone do sistema" src="plc_logo.ico" style={{ marginRight: "10px" }}></Avatar>
+          <Navbar.Brand href="/adminHome">Banco de Horas</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav>
+              <NavDropdown title="Controle de Alunos" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/aprovarAlunos">Aprovar Alunos</NavDropdown.Item>
+                <NavDropdown.Item href="/manterAlunos">Manter Alunos</NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown title="Controle de Avaliadores" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/cadastroAvaliador">Cadastrar Avaliador</NavDropdown.Item>
+                <NavDropdown.Item href="/manterAvaliadores">Manter Avaliadores</NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown title="Opções" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={() => setToken(null)}>Log Out</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </div >
+  )
 }

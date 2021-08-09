@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function CadastroProfessor() {
+export default function CadastroAvaliador() {
     const { token } = useContext(StoreContext);
     const classes = useStyles();
     const [nome, setNome] = useState("");
@@ -39,13 +39,13 @@ export default function CadastroProfessor() {
     const [senha, setSenha] = useState("");
     const [confSenha, setConfSenha] = useState("");
 
-    const insertProfessor = async() => {
+    const insertAvaliador = async() => {
         try {
             var usertoken = uuidv4();
             const body = { nome, matricula, email, senha, confEmail, confSenha, usertoken };
             console.log(body);
 
-            const response = await fetch(Portas().serverHost + "/professores/" + token, {
+            const response = await fetch(Portas().serverHost + "/avaliadores/" + token, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
@@ -53,7 +53,7 @@ export default function CadastroProfessor() {
 
             var resJSON = await response.json();
             alert(resJSON);
-            window.location = "/manterProfessores";
+            window.location = "/manterAvaliadores";
 
         } catch (err) { }
     }
@@ -84,7 +84,7 @@ export default function CadastroProfessor() {
             return;
         }
 
-        insertProfessor();
+        insertAvaliador();
     }
 
     return (
@@ -92,7 +92,7 @@ export default function CadastroProfessor() {
             <NavBar></NavBar>
             <div className={classes.root}>
                 <Grid >
-                    <h2 style={{ textAlign: "center", marginLeft: "30px", marginRight: "30px", color: "blue" }}>Cadastrar Professor</h2>
+                    <h2 style={{ textAlign: "center", marginLeft: "30px", marginRight: "30px", color: "blue" }}>Cadastrar Avaliador</h2>
                     <Paper elevation={10}>
                         <Fragment>
                             <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", }}>
