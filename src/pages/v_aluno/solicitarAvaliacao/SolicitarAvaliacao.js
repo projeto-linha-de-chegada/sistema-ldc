@@ -57,7 +57,8 @@ export default function SolicitarAvaliacao() {
             );
             var resJSON1 = await response.json();
             alert(resJSON1);
-            
+            window.location = "/historicoAvaliacao";
+            return;
 
 
             }catch(err){
@@ -77,11 +78,11 @@ export default function SolicitarAvaliacao() {
                 <Paper className={classes.paper}>
                     <h1 style={{ color: "blue" }}>Solicitar Avaliação</h1>
                     <p>
-                        Ao solicitar uma avaliação, um professor receberá todas as suas atividades cadastradas
+                        Ao solicitar uma avaliação, a coordenação receberá todas as suas atividades cadastradas
                         no momento.
                     </p>
                     <p>
-                        Ele avaliará cada uma e anexará um feedback.
+                        O conselho avaliará cada uma e anexará um feedback.
                     </p>
                     <p>
                         Certifique-se de que a informação não está incorreta e/ou desatualizada!

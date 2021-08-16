@@ -62,7 +62,7 @@ export default function NavBar() {
             <Nav>
               <NavDropdown title="Controle de Atividades" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/avaliarAtividades">Avaliar Atividades</NavDropdown.Item>
-                <NavDropdown.Item href="/manterAlunos">Histórico de Avaliações</NavDropdown.Item>
+                <NavDropdown.Item href="/historicoAvaliacoes">Histórico de Avaliações</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Opções" id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={() => setToken(null)}>Log Out</NavDropdown.Item>

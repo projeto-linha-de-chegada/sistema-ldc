@@ -59,7 +59,9 @@ export default function Home() {
     const [options, setOptions] = useState();
     const [optionsBar, setOptionsBar] = useState();
     const [data, setData] = useState([]);
-    const [dataTotal, setDataTotal] = useState([]);
+    const [dataTotal, setDataTotal] = useState(
+
+    );
     const [optionsTotal, setOptionsTotal] = useState();
     const [dataBar, setDataBar] = useState([])
     const itemData = [
@@ -177,19 +179,29 @@ export default function Home() {
                 ['Contador de Horas', i_ + ii_ + iii_ + iv_ + v_ + vi_ + vii_, 288],
             ]
         )
+        if (i_ === 0 && ii_ === 0 && iii_ === 0 && iv_ === 0 && v_ === 0 && vi_ === 0 && vii_ === 0) {
+            setData(
+                [
+                    ['A', 'Horas inseridas'],
+                    ['Nenhuma Atividade Inserida', 1],
 
-        setData(
-            [
-                ['A', 'Horas inseridas'],
-                ['I', i_],
-                ['II', ii_],
-                ['III', iii_],
-                ['IV', iv_],
-                ['V', v_],
-                ['VI', vi_],
-                ['VII', vii_],
-            ]
-        )
+                ]
+            )
+        }
+        else {
+            setData(
+                [
+                    ['A', 'Horas inseridas'],
+                    ['I', i_],
+                    ['II', ii_],
+                    ['III', iii_],
+                    ['IV', iv_],
+                    ['V', v_],
+                    ['VI', vi_],
+                    ['VII', vii_],
+                ]
+            )
+        }
 
         setDataBar(
             [
@@ -203,16 +215,6 @@ export default function Home() {
                 ['Categoria VII', vii_, 48],
             ]
         )
-
-        if( i_ === 0 && ii_ === 0 && iii_ === 0 && iv_ === 0 && v_ === 0 && vi_ === 0 && vii_ === 0){
-            setData(
-                [
-                    ['A', 'Horas inseridas'],
-                    ['Nenhuma Atividade Inserida', 1],
-                    
-                ]
-            )
-        }
     }
 
     //pegar registros de atividades

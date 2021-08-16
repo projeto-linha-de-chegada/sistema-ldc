@@ -16,6 +16,8 @@ import Path from "path";
 import Copyright from "../../copyright/Copyright";
 import "./manterAtividades.css";
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
 
 //auth
 import StoreContext from '../../../components/Store/Context';
@@ -101,6 +103,16 @@ export default function ManterAtividades() {
     const [selectedDateFim, setSelectedDateFim] = React.useState(new Date());
     const [editID, setEditID] = useState();
     const [nomeAntigoPdf, setNomeAntigoPdf] = React.useState();
+
+
+    const isValid = (id) => {
+        if (id === "" || id === null || id === undefined) {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 
     const handleDateChangeInicio = (date) => {
         setSelectedDateInicio(date);
@@ -492,29 +504,45 @@ export default function ManterAtividades() {
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th style={{ textAlign: "center" }}>Titulo</th>
+                            <th>Titulo</th>
                             <th>Inicio</th>
                             <th>Fim</th>
-                            <th style={{ textAlign: "center" }}>Categoria</th>
-                            <th style={{ textAlign: "center" }}>SubCategoria</th>
-                            <th style={{ textAlign: "center" }}>QuantHoras</th>
-                            <th style={{ textAlign: "center" }}>Descrição</th>
-                            <th style={{ textAlign: "center" }}>Link</th>
-                            <th style={{ textAlign: "center" }}>Pdf</th>
+                            <th>Categoria</th>
+                            <th>SubCategoria</th>
+                            <th>QuantHoras</th>
+                            <th>Descrição</th>
+                            <th>Link</th>
+                            <th>Pdf</th>
                         </tr>
                     </thead>
                     <tbody>
                         {atividades.map(atividade => (
                             <tr key={atividade.id}>
                                 <td>{atividade.titulo}</td>
-                                <td>{atividade.data_inicio}</td>
-                                <td>{atividade.data_fim}</td>
+                                <td>{atividade.data_inicio.replace(/-/gi,"/")}</td>
+                                <td>{atividade.data_fim.replace(/-/gi,"/")}</td>
                                 <td>{atividade.categoria}</td>
                                 <td>{atividade.sub_categoria}</td>
                                 <td>{atividade.quantidade_horas}</td>
                                 <td>{atividade.descricao}</td>
-                                <td onClick={() => openLink(atividade.doc_link)} style={{ cursor: "pointer", color: "blue" }}>Link Anexado</td>
-                                <td onClick={() => openPdf(atividade.nome_pdf)} style={{ cursor: "pointer", color: "blue" }}>Pdf Anexado</td>
+                                <td>
+                                    {isValid(atividade.doc_link)?
+                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openLink(atividade.doc_link)} >
+                                            Abrir link
+                                        </Button>
+                                        :
+                                        "Sem Anexo"
+                                    }
+                                </td>
+                                <td>
+                                    {isValid(atividade.nome_pdf)?
+                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openPdf(atividade.nome_pdf)} >
+                                            Abrir pdf
+                                        </Button>
+                                        :
+                                        "Sem Anexo"
+                                    }
+                                </td>
                                 <td>
                                     <button
                                         className="btn btn-primary"

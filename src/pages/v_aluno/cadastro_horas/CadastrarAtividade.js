@@ -337,6 +337,8 @@ export default function FormPropsTextFields() {
 
                 var resJSON = await response.json();
                 alert(resJSON);
+                window.location = "/manterAtividades";
+
 
             } catch (err) {
                 console.log(err.message);
@@ -355,6 +357,7 @@ export default function FormPropsTextFields() {
 
                 var resJSON = await response.json();
                 alert(resJSON);
+                window.location = "/manterAtividades";
 
             } catch (err) {
                 console.log(err.message);
