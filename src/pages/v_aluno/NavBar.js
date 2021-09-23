@@ -63,7 +63,7 @@ export default function NavBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
-              <Nav.Link href="/perfil" >Perfil</Nav.Link>
+              
               <NavDropdown title="Atividades" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/cadastrarAtividade">Cadastrar atividades</NavDropdown.Item>
                 <NavDropdown.Item href="/manterAtividades">Manter atividades</NavDropdown.Item>
